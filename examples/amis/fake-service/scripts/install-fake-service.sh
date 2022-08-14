@@ -214,7 +214,7 @@ function install_binary {
 
   local -r bin_dir="$install_path/bin"
   local -r fake-service_dest_path="$bin_dir/fake-service"
-  local -r run_fake-service_dest_path="$bin_dir/run-fake-service"
+  local -r run_fake-service_dest_path="$bin_dir/run-fake-service.sh"
 
   unzip -d /tmp "$DOWNLOAD_PACKAGE_PATH"
 
@@ -232,7 +232,7 @@ function install_binary {
   fi
 
   log_info "Copying fake-service run script to $run_fake-service_dest_path"
-  sudo cp "$SCRIPT_DIR/run-fake-service" "$run_fake-service_dest_path"
+  sudo cp "$SCRIPT_DIR/run-fake-service.sh" "$run_fake-service_dest_path"
   sudo chown "$username:$username" "$run_fake-service_dest_path"
   sudo chmod a+x "$run_fake-service_dest_path"
 }
