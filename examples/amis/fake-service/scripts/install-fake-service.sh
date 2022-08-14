@@ -213,28 +213,28 @@ function install_binary {
   local -r username="$2"
 
   local -r bin_dir="$install_path/bin"
-  local -r fake-service_dest_path="$bin_dir/fake-service"
-  local -r run_fake-service_dest_path="$bin_dir/run-fake-service.sh"
+  local -r fake_service_dest_path="$bin_dir/fake-service"
+  local -r run_fake_service_dest_path="$bin_dir/run-fake-service.sh"
 
   unzip -d /tmp "$DOWNLOAD_PACKAGE_PATH"
 
-  log_info "Moving fake-service binary to $fake-service_dest_path"
-  sudo mv "/tmp/fake-service" "$fake-service_dest_path"
-  sudo chown "$username:$username" "$fake-service_dest_path"
-  sudo chmod a+x "$fake-service_dest_path"
+  log_info "Moving fake-service binary to $fake_service_dest_path"
+  sudo mv "/tmp/fake-service" "$fake_service_dest_path"
+  sudo chown "$username:$username" "$fake_service_dest_path"
+  sudo chmod a+x "$fake_service_dest_path"
 
   local -r symlink_path="$SYSTEM_BIN_DIR/fake-service"
   if [[ -f "$symlink_path" ]]; then
     log_info "Symlink $symlink_path already exists. Will not add again."
   else
-    log_info "Adding symlink to $fake-service_dest_path in $symlink_path"
-    sudo ln -s "$fake-service_dest_path" "$symlink_path"
+    log_info "Adding symlink to $fake_service_dest_path in $symlink_path"
+    sudo ln -s "$fake_service_dest_path" "$symlink_path"
   fi
 
-  log_info "Copying fake-service run script to $run_fake-service_dest_path"
-  sudo cp "$SCRIPT_DIR/run-fake-service.sh" "$run_fake-service_dest_path"
-  sudo chown "$username:$username" "$run_fake-service_dest_path"
-  sudo chmod a+x "$run_fake-service_dest_path"
+  log_info "Copying fake-service run script to $run_fake_service_dest_path"
+  sudo cp "$SCRIPT_DIR/run-fake-service.sh" "$run_fake_service_dest_path"
+  sudo chown "$username:$username" "$run_fake_service_dest_path"
+  sudo chmod a+x "$run_fake_service_dest_path"
 }
 
 function install {
