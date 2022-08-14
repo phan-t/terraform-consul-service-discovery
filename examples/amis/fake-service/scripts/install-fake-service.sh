@@ -131,7 +131,7 @@ function user_exists {
   id "$username" >/dev/null 2>&1
 }
 
-function create_fake-service_user {
+function create_fake_service_user {
   local -r username="$1"
 
   if user_exists "$username"; then
@@ -142,7 +142,7 @@ function create_fake-service_user {
   fi
 }
 
-function create_fake-service_install_paths {
+function create_fake_service_install_paths {
   local -r path="$1"
   local -r username="$2"
 
@@ -284,8 +284,8 @@ function install {
   log_info "Starting fake-service install"
 
   install_dependencies
-  create_fake-service_user "$user"
-  create_fake-service_install_paths "$path" "$user"
+  create_fake_service_user "$user"
+  create_fake_service_install_paths "$path" "$user"
 
   fetch_binary "$version" "$download_url"
   install_binary "$path" "$user"
