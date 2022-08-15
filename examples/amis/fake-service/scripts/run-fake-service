@@ -12,7 +12,7 @@ Group=fake-service
 LimitMEMLOCK=infinity
 Capabilities=CAP_IPC_LOCK+ep
 CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
-EnvironmentFile=/opt/fake-service/config/fake-service.confg
+EnvironmentFile=/opt/fake-service/config/fake-service.config
 
 [Install]
 WantedBy=multi-user.target
