@@ -1,0 +1,34 @@
+global:
+  enabled: true
+  name: consul
+  image: "hashicorp/consul-enterprise:${consul_version}"
+  datacenter: ${deployment_name}
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+  enterpriseLicense:
+    secretName: consul-ent-license
+    secretKey: key
+  federation:
+    enabled: true
+    createFederationSecret: true
+server:
+  replicas: ${replicas}
+  bootstrapExpect: ${replicas}
+  exposeGossipAndRPCPorts: true
+  ports:
+    serflan:
+      port: ${serf_lan_port}
+dns:
+  enabled: true
+  enableRedirection: true
+ui:
+  service:
+    type: LoadBalancer
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+meshGateway:
+  enabled: true
+  replicas: ${replicas}

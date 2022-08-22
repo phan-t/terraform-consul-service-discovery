@@ -1,0 +1,48 @@
+global:
+  enabled: true
+  name: consul
+  image: "hashicorp/consul-enterprise:${consul_version}"
+  datacenter: ${deployment_name}
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
+  enterpriseLicense:
+    secretName: consul-ent-license
+    secretKey: key
+  federation:
+    enabled: true
+    primaryDatacenter: ${primary_datacenter}
+    k8sAuthMethodHost: ${cluster_endpoint}
+server:
+  replicas: ${replicas}
+  bootstrapExpect: ${replicas}
+  exposeGossipAndRPCPorts: true
+  ports:
+    serflan:
+      port: ${serf_lan_port}
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
+dns:
+  enabled: true
+  enableRedirection: true
+ui:
+  service:
+    type: LoadBalancer
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+meshGateway:
+  enabled: true
+  replicas: ${replicas}
