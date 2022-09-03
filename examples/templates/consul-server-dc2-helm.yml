@@ -18,7 +18,7 @@ global:
   federation:
     enabled: true
     primaryDatacenter: ${primary_datacenter}
-    k8sAuthMethodHost: ${cluster_endpoint}
+    k8sAuthMethodHost: ${cluster_api_endpoint}
 server:
   replicas: ${replicas}
   bootstrapExpect: ${replicas}

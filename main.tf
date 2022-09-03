@@ -63,14 +63,14 @@ module "consul-server-dc2" {
     helm       = helm.dc2
   }
 
-  deployment_name    = var.deployment_name
-  helm_chart_version = var.consul_helm_chart_version
-  consul_version     = var.consul_version
-  ent_license        = var.consul_ent_license
-  federation_secret  = module.consul-server-dc1.federation_secret
-  replicas           = var.consul_replicas
-  serf_lan_port      = var.consul_serf_lan_port
-  cluster_endpoint   = module.infra-aws.eks_cluster_api_endpoints["dc2"]
+  deployment_name      = var.deployment_name
+  helm_chart_version   = var.consul_helm_chart_version
+  consul_version       = var.consul_version
+  ent_license          = var.consul_ent_license
+  federation_secret    = module.consul-server-dc1.federation_secret
+  replicas             = var.consul_replicas
+  serf_lan_port        = var.consul_serf_lan_port
+  cluster_api_endpoint = module.infra-aws.eks_cluster_api_endpoints["dc2"]
 
   depends_on = [
     module.consul-server-dc1

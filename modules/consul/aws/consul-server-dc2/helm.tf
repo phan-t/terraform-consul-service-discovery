@@ -5,7 +5,7 @@ resource "local_file" "consul-server-helm-values" {
     replicas              = var.replicas
     serf_lan_port         = var.serf_lan_port
     primary_datacenter    = "dc1"
-    cluster_endpoint      = var.cluster_endpoint
+    cluster_api_endpoint  = var.cluster_api_endpoint
     })
   filename = "${path.module}/consul-server-dc2-helm-values.yml.tmp"
 }

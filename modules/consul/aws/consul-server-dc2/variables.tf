@@ -33,7 +33,7 @@ variable "serf_lan_port" {
   type        = number
 }
 
-variable "cluster_endpoint" {
+variable "cluster_api_endpoint" {
   description = "Address of the kubernetes api server"
   type        = string
 }
