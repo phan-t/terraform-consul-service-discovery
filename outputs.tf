@@ -7,7 +7,3 @@ output "dc2-ui_public_fqdn" {
   description = "DC2 ui public fqdn"
   value       = "https://${module.consul-server-dc2.ui_public_fqdn}"
 }
-
-output "test" {
-  value = local.fake_services
-}

@@ -25,36 +25,36 @@ variable "datacenter_config" {
         public_subnets      = ["10.100.0.0/24", "10.100.1.0/24", "10.100.2.0/24"]
         private_subnets     = ["10.100.100.0/24", "10.100.101.0/24", "10.100.102.0/24"]
         fake_service_names  = ["frontend", "api", "backend"]
-        fake_services       = {
-            frontend = {
-              count         = 1
-              upstream_uris = "api.service.consul"
-            }
-            api = {
-              count         = 2
-              upstream_uris = "backend.service.consul"
-            }
-            backend = {
-              count         = 2
-              upstream_uris = ""
-            }
-          }
+        # fake_services       = {
+        #     frontend = {
+        #       count         = 1
+        #       upstream_uris = "api.service.consul"
+        #     }
+        #     api = {
+        #       count         = 2
+        #       upstream_uris = "backend.service.consul"
+        #     }
+        #     backend = {
+        #       count         = 2
+        #       upstream_uris = ""
+        #     }
+        #   }
     }
     dc2 = {
         vpc_cidr            = "10.200.0.0/16"
         public_subnets      = ["10.200.0.0/24", "10.200.1.0/24", "10.200.2.0/24"]
         private_subnets     = ["10.200.100.0/24", "10.200.101.0/24", "10.200.102.0/24"]
         fake_service_names  = ["api", "backend"]
-        fake_services       = {
-            api = {
-              count         = 2
-              upstream_uris = "backend.service.consul"
-            }
-            backend = {
-              count         = 2
-              upstream_uris = ""
-            }
-          }
+        # fake_services       = {
+        #     api = {
+        #       count         = 2
+        #       upstream_uris = "backend.service.consul"
+        #     }
+        #     backend = {
+        #       count         = 2
+        #       upstream_uris = ""
+        #     }
+        #   }
     }
   }  
 }
