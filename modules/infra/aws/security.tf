@@ -47,20 +47,6 @@ module "sg-consul" {
       cidr_blocks = "${each.value.vpc_cidr_block}"
     },
     {
-      from_port   = var.consul_serf_lan_port
-      to_port     = var.consul_serf_lan_port
-      protocol    = "tcp"
-      description = "consul-lan-serf-gosspip-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = var.consul_serf_lan_port
-      to_port     = var.consul_serf_lan_port
-      protocol    = "udp"
-      description = "consul-lan-serf-gosspip-udp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
       from_port   = 8443
       to_port     = 8443
       protocol    = "tcp"
@@ -86,66 +72,31 @@ module "sg-consul" {
       to_port     = 8600
       protocol    = "udp"
       description = "consul-dns-udp"
+      cidr_blocks = "${each.value.vpc_cidr_block}"
+    },
+    {
+      from_port   = var.consul_serf_lan_port
+      to_port     = var.consul_serf_lan_port
+      protocol    = "tcp"
+      description = "consul-lan-serf-gosspip-tcp"
+      cidr_blocks = "${each.value.vpc_cidr_block}"
+    },
+    {
+      from_port   = var.consul_serf_lan_port
+      to_port     = var.consul_serf_lan_port
+      protocol    = "udp"
+      description = "consul-lan-serf-gosspip-udp"
       cidr_blocks = "${each.value.vpc_cidr_block}"
     }
   ]
 
   egress_with_cidr_blocks = [
     {
-      from_port   = 8300
-      to_port     = 8301
-      protocol    = "tcp"
-      description = "consul-rpc-lan-serf-gosspip-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = 8300
-      to_port     = 8301
-      protocol    = "udp"
-      description = "consul-lan-serf-gosspip-udp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = var.consul_serf_lan_port
-      to_port     = var.consul_serf_lan_port
-      protocol    = "tcp"
-      description = "consul-lan-serf-gosspip-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = var.consul_serf_lan_port
-      to_port     = var.consul_serf_lan_port
-      protocol    = "udp"
-      description = "consul-lan-serf-gosspip-udp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = 8443
-      to_port     = 8443
-      protocol    = "tcp"
-      description = "consul-mesh-gateways"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "any-any"
       cidr_blocks = "0.0.0.0/0"
-    },
-    {
-      from_port   = 8500
-      to_port     = 8502
-      protocol    = "tcp"
-      description = "consul-http-https-api-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = 8600
-      to_port     = 8600
-      protocol    = "tcp"
-      description = "consul-dns-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
-    },
-    {
-      from_port   = 8600
-      to_port     = 8600
-      protocol    = "udp"
-      description = "consul-dns-udp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
     }
   ]
 }
@@ -171,11 +122,11 @@ module "sg-fake-service" {
 
   egress_with_cidr_blocks = [
     {
-      from_port   = 9090
-      to_port     = 9090
-      protocol    = "tcp"
-      description = "fake-service-tcp"
-      cidr_blocks = "${each.value.vpc_cidr_block}"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "any-any"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 }
