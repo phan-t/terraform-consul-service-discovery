@@ -1,13 +1,11 @@
 resource "local_file" "consul-server-helm-values" {
-  content = templatefile("${path.root}/examples/templates/consul-server-dc2-helm.yml", {
-    deployment_name       = "dc2"
+  content = templatefile("${path.root}/examples/templates/consul-server-dc1-helm.yml", {
+    deployment_name       = "${keys(var.datacenter_config)[0]}"
     consul_version        = var.consul_version
     replicas              = var.replicas
     serf_lan_port         = var.serf_lan_port
-    primary_datacenter    = "dc1"
-    cluster_api_endpoint  = var.cluster_api_endpoint
     })
-  filename = "${path.module}/consul-server-dc2-helm-values.yml.tmp"
+  filename = "${path.module}/consul-server-dc1-helm-values.yml.tmp"
 }
 
 resource "helm_release" "consul-server" {

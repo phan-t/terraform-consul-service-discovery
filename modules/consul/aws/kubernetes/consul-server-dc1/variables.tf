@@ -3,6 +3,11 @@ variable "deployment_name" {
   type        = string
 }
 
+variable "datacenter_config" {
+  description = "List of VPCs"
+  type        = map
+}
+
 variable "helm_chart_version" {
   type        = string
   description = "Helm chart version"
