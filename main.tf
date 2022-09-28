@@ -25,9 +25,9 @@ module "infra-aws" {
   source  = "./modules/infra/aws"
 
   region                             = var.aws_region
+  deployment_id                      = local.deployment_id
   owner                              = var.owner
   ttl                                = var.ttl
-  deployment_id                      = local.deployment_id
   key_pair_key_name                  = var.aws_key_pair_key_name
   datacenter_config                  = var.datacenter_config
   cluster_version                    = var.aws_eks_cluster_version
@@ -37,46 +37,62 @@ module "infra-aws" {
   consul_serf_lan_port               = var.consul_serf_lan_port
 }
 
-module "consul-server-dc1" {
-  source = "./modules/consul/aws/kubernetes/consul-server-dc1"
-  providers = {
-    kubernetes = kubernetes.dc1,
-    helm       = helm.dc1
-  }
+# module "k8s-consul-server-dc1" {
+#   source = "./modules/consul/aws/kubernetes/consul-server-dc1"
+#   providers = {
+#     kubernetes = kubernetes.dc1,
+#     helm       = helm.dc1
+#   }
 
-  deployment_name    = var.deployment_name
-  datacenter_config  = var.datacenter_config
-  helm_chart_version = var.consul_helm_chart_version
-  consul_version     = var.consul_version
-  ent_license        = var.consul_ent_license
-  replicas           = var.consul_replicas
-  serf_lan_port      = var.consul_serf_lan_port
+#   deployment_name    = var.deployment_name
+#   datacenter_config  = var.datacenter_config
+#   helm_chart_version = var.consul_helm_chart_version
+#   consul_version     = var.consul_version
+#   ent_license        = var.consul_ent_license
+#   replicas           = var.consul_replicas
+#   serf_lan_port      = var.consul_serf_lan_port
 
-  depends_on = [
-    module.infra-aws
-  ]
-}
+#   depends_on = [
+#     module.infra-aws
+#   ]
+# }
 
-module "consul-server-dc2" {
-  source = "./modules/consul/aws/kubernetes/consul-server-dc2"
-  providers = {
-    kubernetes = kubernetes.dc2,
-    helm       = helm.dc2
-  }
+# module "k8s-consul-server-dc2" {
+#   source = "./modules/consul/aws/kubernetes/consul-server-dc2"
+#   providers = {
+#     kubernetes = kubernetes.dc2,
+#     helm       = helm.dc2
+#   }
 
-  deployment_name      = var.deployment_name
-  datacenter_config  = var.datacenter_config
-  helm_chart_version   = var.consul_helm_chart_version
-  consul_version       = var.consul_version
-  ent_license          = var.consul_ent_license
-  federation_secret    = module.consul-server-dc1.federation_secret
-  replicas             = var.consul_replicas
-  serf_lan_port        = var.consul_serf_lan_port
-  cluster_api_endpoint = module.infra-aws.eks_cluster_api_endpoints["dc2"]
+#   deployment_name      = var.deployment_name
+#   datacenter_config  = var.datacenter_config
+#   helm_chart_version   = var.consul_helm_chart_version
+#   consul_version       = var.consul_version
+#   ent_license          = var.consul_ent_license
+#   federation_secret    = module.consul-server-dc1.federation_secret
+#   replicas             = var.consul_replicas
+#   serf_lan_port        = var.consul_serf_lan_port
+#   cluster_api_endpoint = module.infra-aws.eks_cluster_api_endpoints["dc2"]
 
-  depends_on = [
-    module.consul-server-dc1
-  ]
+#   depends_on = [
+#     module.consul-server-dc1
+#   ]
+# }
+
+module "asg-consul-server-dc1" {
+  source = "./modules/consul/aws/autoscaling-group/consul-servers-dc1"
+
+  deployment_id             = local.deployment_id
+  owner                     = var.owner
+  ttl                       = var.ttl
+  key_pair_key_name         = var.aws_key_pair_key_name
+  datacenter_config         = var.datacenter_config
+  # private_subnet_ids        = module.infra-aws.vpc_private_subnet_ids
+  private_subnet_ids        = module.infra-aws.vpc_public_subnet_ids
+  security_group_ssh_id     = module.infra-aws.sg_ssh_ids
+  security_group_consul_id  = module.infra-aws.sg_consul_ids
+  ami_consul_server_asg     = var.ami_consul_server_asg
+
 }
 
 # module "fake-services" {
