@@ -66,7 +66,7 @@ resource "aws_launch_configuration" "launch_configuration" {
                   #!/bin/bash
                   sudo cp /var/tmp/consul-ent-license.hclic /opt/consul/config/consul-ent-license.hclic
                   sudo cp /var/tmp/consul-config-license.json /opt/consul/config/consul-config-license.json
-                  /opt/consul/bin/run-consul --server --cluster-tag-key consul-cluster --cluster-tag-value ${var.deployment_id}-dc1
+                  /opt/consul/bin/run-consul --server --datacenter dc1 --cluster-tag-key consul-cluster --cluster-tag-value ${var.deployment_id}-dc1
                   EOF
   # spot_price    = var.spot_price
 
