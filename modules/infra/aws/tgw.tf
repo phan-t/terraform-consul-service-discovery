@@ -18,3 +18,19 @@ module "tgw" {
     }
   }
 }
+
+resource "aws_route" "dc1_public_tgw_route" {
+  for_each                  = var.datacenter_config
+
+  route_table_id            = module.vpc["dc1"].public_route_table_ids[0]
+  destination_cidr_block    = "10.200.0.0/16"
+  transit_gateway_id        = module.tgw.ec2_transit_gateway_id
+}
+
+resource "aws_route" "dc2_public_tgw_route" {
+  for_each                  = var.datacenter_config
+
+  route_table_id            = module.vpc["dc2"].public_route_table_ids[0]
+  destination_cidr_block    = "10.100.0.0/16"
+  transit_gateway_id        = module.tgw.ec2_transit_gateway_id
+}
