@@ -77,7 +77,7 @@ build {
   }
 
   provisioner "file" {
-    source       = "consul-config-license.json"
-    destination  = "/var/tmp/consul-config-license.json"
+    source       = "consul-config.json"
+    destination  = "/var/tmp/consul-config.json"
   }
 }

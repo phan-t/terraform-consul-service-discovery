@@ -79,20 +79,20 @@ module "infra-aws" {
 #   ]
 # }
 
-module "asg-consul-server-dc1" {
-  source = "./modules/consul/aws/autoscaling-group/consul-servers-dc1"
+module "asg-consul-server" {
+  source = "./modules/consul/aws/autoscaling-group/consul-servers"
 
-  deployment_id             = local.deployment_id
-  owner                     = var.owner
-  ttl                       = var.ttl
-  key_pair_key_name         = var.aws_key_pair_key_name
-  datacenter_config         = var.datacenter_config
-  # private_subnet_ids        = module.infra-aws.vpc_private_subnet_ids
-  private_subnet_ids        = module.infra-aws.vpc_public_subnet_ids
-  security_group_ssh_id     = module.infra-aws.sg_ssh_ids
-  security_group_consul_id  = module.infra-aws.sg_consul_ids
-  ami_consul_server_asg     = var.ami_consul_server_asg
-
+  deployment_id                = local.deployment_id
+  owner                        = var.owner
+  ttl                          = var.ttl
+  key_pair_key_name            = var.aws_key_pair_key_name
+  datacenter_config            = var.datacenter_config
+  # private_subnet_ids           = module.infra-aws.vpc_private_subnet_ids
+  private_subnet_ids           = module.infra-aws.vpc_public_subnet_ids
+  security_group_ssh_id        = module.infra-aws.sg_ssh_ids
+  security_group_consul_id     = module.infra-aws.sg_consul_ids
+  security_group_consul_wan_id = module.infra-aws.sg_consul_wan_ids
+  ami_consul_server_asg        = var.ami_consul_server_asg
 }
 
 # module "fake-services" {

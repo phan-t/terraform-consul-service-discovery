@@ -128,7 +128,7 @@ variable "consul_serf_lan_port" {
 variable "ami_consul_server_asg" {
   description = "AMI of Consul Server Autoscaling Group"
   type        = string
-  default     = "ami-0ff6aadaa47e649b0"
+  default     = "ami-00559e132e391d74b"
 }
 
 variable "ami_fake_service" {

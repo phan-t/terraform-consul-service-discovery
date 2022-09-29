@@ -101,6 +101,50 @@ module "sg-consul" {
   ]
 }
 
+module "sg-consul-wan" {
+  source = "terraform-aws-modules/security-group/aws"
+  version     = "4.9.0"
+
+  for_each    = module.vpc
+
+  name        = "${var.deployment_id}-consul-wan"
+  vpc_id      = each.value.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 8300
+      to_port     = 8300
+      protocol    = "tcp"
+      description = "consul-server-rpc-tcp"
+      cidr_blocks = "10.0.0.0/8"
+    },
+    {
+      from_port   = 8302
+      to_port     = 8302
+      protocol    = "tcp"
+      description = "consul-wan-serf-gosspip-tcp"
+      cidr_blocks = "10.0.0.0/8"
+    },
+    {
+      from_port   = 8302
+      to_port     = 8302
+      protocol    = "udp"
+      description = "consul-wan-serf-gosspip-udp"
+      cidr_blocks = "10.0.0.0/8"
+    }
+  ]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "any-any"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+}
+
 module "sg-fake-service" {
   source = "terraform-aws-modules/security-group/aws"
   version     = "4.9.0"

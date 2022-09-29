@@ -18,6 +18,10 @@ output "sg_consul_ids" {
   value = {for k, v in module.sg-consul : k => v.security_group_id}
 }
 
+output "sg_consul_wan_ids" {
+  value = {for k, v in module.sg-consul-wan : k => v.security_group_id}
+}
+
 output "sg_fake_service_ids" {
   value = {for k, v in module.sg-fake-service : k => v.security_group_id}
 }
