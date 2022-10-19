@@ -22,6 +22,30 @@ module "sg-ssh" {
   ]
 }
 
+module "sg-elb-consul" {
+  source = "terraform-aws-modules/security-group/aws"
+  version     = "4.9.0"
+
+  for_each    = module.vpc
+
+  name        = "${var.deployment_id}-elb-consul"
+  vpc_id      = each.value.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      rule        = "consul-webui-http-tcp"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+
+  egress_with_cidr_blocks = [
+    {
+      rule        = "consul-webui-http-tcp"
+      cidr_blocks = "${each.value.vpc_cidr_block}"
+    }
+  ]
+}
+
 module "sg-consul" {
   source = "terraform-aws-modules/security-group/aws"
   version     = "4.9.0"

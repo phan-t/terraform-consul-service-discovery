@@ -1,3 +1,34 @@
+resource "aws_lb" "consul-asg-dc1" {
+  name               = "consul-asg-dc1"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [var.security_group_elb_consul_id["dc1"]]
+  subnets            = [for subnet in var.public_subnet_ids["dc1"] : subnet]
+}
+
+resource "aws_lb_listener" "consul-asg-dc1" {
+  load_balancer_arn = aws_lb.consul-asg-dc1.arn
+  port              = "8500"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.consul-asg-dc1.arn
+  }
+}
+
+ resource "aws_lb_target_group" "consul-asg-dc1" {
+   name     = "consul-asg-dc1"
+   port     = 8500
+   protocol = "HTTP"
+   vpc_id   = var.vpc_ids["dc1"]
+ }
+
+resource "aws_autoscaling_attachment" "consul-asg-dc1" {
+  autoscaling_group_name = aws_autoscaling_group.consul-asg["dc1"].id
+  lb_target_group_arn    = aws_lb_target_group.consul-asg-dc1.arn
+}
+
 resource "aws_launch_configuration" "launch_configuration" {
   for_each = var.datacenter_config
 
@@ -20,7 +51,7 @@ resource "aws_launch_configuration" "launch_configuration" {
   }
 }
 
-resource "aws_autoscaling_group" "autoscaling_group" {
+resource "aws_autoscaling_group" "consul-asg" {
   for_each = aws_launch_configuration.launch_configuration
 
   name_prefix               = "${var.deployment_id}-${each.key}"

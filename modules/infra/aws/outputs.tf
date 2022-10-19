@@ -14,6 +14,10 @@ output "sg_ssh_ids" {
   value = {for k, v in module.sg-ssh : k => v.security_group_id}
 }
 
+output "sg_elb_consul_ids" {
+  value = {for k, v in module.sg-elb-consul : k => v.security_group_id}
+}
+
 output "sg_consul_ids" {
   value = {for k, v in module.sg-consul : k => v.security_group_id}
 }

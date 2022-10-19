@@ -23,12 +23,25 @@ variable "datacenter_config" {
   type        = map
 }
 
+variable "vpc_ids" {
+  description = "VPC ids"
+}
+
+variable "public_subnet_ids" {
+  description = "Public subnet ids"
+}
+
 variable "private_subnet_ids" {
   description = "Private subnet ids"
 }
 
 variable "security_group_ssh_id" {
   description = "Security group ssh ids"
+  # type        = string
+}
+
+variable "security_group_elb_consul_id" {
+  description = "Security group consul ids"
   # type        = string
 }
 
