@@ -11,7 +11,7 @@ resource "aws_launch_configuration" "launch_configuration" {
                   #!/bin/bash
                   sudo cp /var/tmp/consul-ent-license.hclic /opt/consul/config/consul-ent-license.hclic
                   sudo cp /var/tmp/consul-config.json /opt/consul/config/consul-config.json
-                  /opt/consul/bin/run-consul --server --datacenter ${each.key} --cluster-tag-key consul-cluster --cluster-tag-value ${var.deployment_id}-${each.key}
+                  /opt/consul/bin/run-consul --server --datacenter ${each.key} --cluster-tag-key consul-cluster --cluster-tag-value ${var.deployment_id}-${each.key} --enable-gossip-encryption  --gossip-encryption-key ${var.gossip_encrypt_key}
                   EOF
 
   lifecycle {

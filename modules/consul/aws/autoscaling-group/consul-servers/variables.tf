@@ -64,3 +64,8 @@ variable "ami_consul_server_asg" {
   description = "AMI of Consul Server Autoscaling Group"
   type        = string
 }
+
+variable "gossip_encrypt_key" {
+  description = "Consul gossip encryption key"
+  type        = string
+}

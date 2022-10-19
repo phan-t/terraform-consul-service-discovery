@@ -16,6 +16,10 @@ resource "random_string" "suffix" {
   special = false
 }
 
+resource "random_id" "consul_gossip_encrypt_key" {
+  byte_length = 32
+}
+
 resource "local_file" "consul-ent-license" {
   content = var.consul_ent_license
   filename = "${path.root}/consul-ent-license.hclic"
@@ -93,20 +97,21 @@ module "asg-consul-server" {
   security_group_consul_id     = module.infra-aws.sg_consul_ids
   security_group_consul_wan_id = module.infra-aws.sg_consul_wan_ids
   ami_consul_server_asg        = var.ami_consul_server_asg
+  gossip_encrypt_key           = random_id.consul_gossip_encrypt_key.b64_std
 }
 
-# module "fake-services" {
-#   source = "./modules/fake-services/aws"
+module "fake-services" {
+  source = "./modules/fake-services/aws"
 
-#   owner                              = var.owner
-#   ttl                                = var.ttl
-#   key_pair_key_name                  = var.aws_key_pair_key_name
-#   datacenter_config                  = var.datacenter_config
-#   public_subnet_ids                  = module.infra-aws.vpc_public_subnet_ids
-#   security_group_ssh_id              = module.infra-aws.sg_ssh_ids
-#   security_group_consul_id           = module.infra-aws.sg_consul_ids
-#   security_group_fake_service_id     = module.infra-aws.sg_fake_service_ids
-#   consul_server_private_fqdn         = tomap({"dc1" = module.consul-server-dc1.private_fqdn, "dc2" = module.consul-server-dc2.private_fqdn})
-#   consul_serf_lan_port               = var.consul_serf_lan_port
-#   ami_fake_service                   = var.ami_fake_service
-# }
+  owner                              = var.owner
+  ttl                                = var.ttl
+  key_pair_key_name                  = var.aws_key_pair_key_name
+  datacenter_config                  = var.datacenter_config
+  public_subnet_ids                  = module.infra-aws.vpc_public_subnet_ids
+  security_group_ssh_id              = module.infra-aws.sg_ssh_ids
+  security_group_consul_id           = module.infra-aws.sg_consul_ids
+  security_group_fake_service_id     = module.infra-aws.sg_fake_service_ids
+  consul_server_private_fqdn         = tomap({"dc1" = "ip-10-100-1-106.ap-southeast-2.compute.internal", "dc2" = "ip-10-200-1-53.ap-southeast-2.compute.internal"})
+  consul_serf_lan_port               = "8301"
+  ami_fake_service                   = var.ami_fake_service
+}
