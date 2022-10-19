@@ -10,6 +10,7 @@ resource "aws_launch_configuration" "launch_configuration" {
   user_data     = <<-EOF
                   #!/bin/bash
                   sudo cp /var/tmp/consul-ent-license.hclic /opt/consul/config/consul-ent-license.hclic
+                  sed -i 's/consul-federation-id-value/${each.value.consul_federation_id}/g' /var/tmp/consul-config.json
                   sudo cp /var/tmp/consul-config.json /opt/consul/config/consul-config.json
                   /opt/consul/bin/run-consul --server --datacenter ${each.key} --cluster-tag-key consul-cluster --cluster-tag-value ${var.deployment_id}-${each.key} --enable-gossip-encryption  --gossip-encryption-key ${var.gossip_encrypt_key}
                   EOF
@@ -36,6 +37,11 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   tag {
       key                 = "consul-datacenter"
       value               = "${each.key}"
+      propagate_at_launch = true
+    }
+  tag {
+      key                 = "consul-federation-id"
+      value               = var.datacenter_config[each.key].consul_federation_id
       propagate_at_launch = true
     }
 

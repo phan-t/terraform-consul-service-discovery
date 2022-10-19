@@ -21,10 +21,12 @@ variable "datacenter_config" {
   type        = map
   default     = {
     dc1 = {
-        vpc_cidr            = "10.100.0.0/16"
-        public_subnets      = ["10.100.0.0/24", "10.100.1.0/24", "10.100.2.0/24"]
-        private_subnets     = ["10.100.100.0/24", "10.100.101.0/24", "10.100.102.0/24"]
-        fake_service_names  = ["frontend", "api", "backend"]
+        vpc_cidr             = "10.100.0.0/16"
+        public_subnets       = ["10.100.0.0/24", "10.100.1.0/24", "10.100.2.0/24"]
+        private_subnets      = ["10.100.100.0/24", "10.100.101.0/24", "10.100.102.0/24"]
+        fake_service_names   = ["frontend", "api", "backend"]
+        consul_federation_id = "1"
+
         # fake_services       = {
         #     frontend = {
         #       count         = 1
@@ -41,10 +43,11 @@ variable "datacenter_config" {
         #   }
     }
     dc2 = {
-        vpc_cidr            = "10.200.0.0/16"
-        public_subnets      = ["10.200.0.0/24", "10.200.1.0/24", "10.200.2.0/24"]
-        private_subnets     = ["10.200.100.0/24", "10.200.101.0/24", "10.200.102.0/24"]
-        fake_service_names  = ["api", "backend"]
+        vpc_cidr             = "10.200.0.0/16"
+        public_subnets       = ["10.200.0.0/24", "10.200.1.0/24", "10.200.2.0/24"]
+        private_subnets      = ["10.200.100.0/24", "10.200.101.0/24", "10.200.102.0/24"]
+        fake_service_names   = ["api", "backend"]
+        consul_federation_id = "1"
         # fake_services       = {
         #     api = {
         #       count         = 2
@@ -128,7 +131,7 @@ variable "consul_serf_lan_port" {
 variable "ami_consul_server_asg" {
   description = "AMI of Consul Server Autoscaling Group"
   type        = string
-  default     = "ami-00559e132e391d74b"
+  default     = "ami-0f20b19db6e3dae5a"
 }
 
 variable "ami_fake_service" {
